@@ -158,6 +158,8 @@ The above copyright notice and this permission notice shall be included in all c
   <script src="{{ asset('assets/js/material-dashboard.js?v=2.1.2" type="text/javascript') }}"></script>
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
   <script src="{{ asset('assets/demo/demo.js') }}"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  @include('sweet::alert')
   <script>
     $(document).ready(function() {
       $().ready(function() {

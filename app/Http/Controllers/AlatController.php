@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Alat;
 use App\Kendali;
 use Illuminate\Http\Request;
+use SweetAlert;
 
 class AlatController extends Controller
 {
     public function index()
     {
-        return view('kendali');
+        $datas = Alat::all();
+
+        return view('alat', compact('datas'));
     }
 
     public function store(Request $request)
@@ -19,6 +22,7 @@ class AlatController extends Controller
             'nama' => $request->nama
         ]);
 
+        alert()->success('Alat berhasil ditambahkan', 'Sukses');
         return redirect()->back();
     }
 
