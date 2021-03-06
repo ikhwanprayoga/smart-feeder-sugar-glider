@@ -17,3 +17,5 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('kirim-data/{alat_id}/{makanan}/{air}', 'ApiController@kirim_data');

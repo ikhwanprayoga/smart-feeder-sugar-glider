@@ -43,19 +43,19 @@ The above copyright notice and this permission notice shall be included in all c
         </a></div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <li class="nav-item active  ">
+          <li class="nav-item {{ (request()->is('dashboard*')) ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('dashboard.index') }}">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
           </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="{{ route('kendali.index') }}">
+          <li class="nav-item {{ (request()->is('alat*')) ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('alat.index') }}">
               <i class="material-icons">bubble_chart</i>
-              <p>Kendali</p>
+              <p>Alat</p>
             </a>
           </li>
-          <li class="nav-item ">
+          <li class="nav-item {{ (request()->is('log-monitoring*')) ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('log-monitoring.index') }}">
               <i class="material-icons">library_books</i>
               <p>Log Monitoring</p>
