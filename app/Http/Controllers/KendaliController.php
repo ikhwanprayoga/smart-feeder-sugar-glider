@@ -10,4 +10,9 @@ class KendaliController extends Controller
     {
         return view('kendali');
     }
+
+    public function alat()
+    {
+        return view('alat');
+    }
 }

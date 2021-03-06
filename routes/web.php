@@ -19,4 +19,5 @@ Route::get('/', function () {
 
 Route::get('dashboard', 'DashboardController@index')->name('dashboard.index');
 Route::get('kendali', 'KendaliController@index')->name('kendali.index');
+Route::get('alat', 'KendaliController@alat')->name('kendali.alat');
 Route::get('log-monitoring', 'LogMonitoringController@index')->name('log-monitoring.index');
