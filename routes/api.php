@@ -19,3 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('kirim-data/{alat_id}/{makanan}/{air}', 'ApiController@kirim_data');
+Route::get('get-data-monitoring/{alat_id}', 'ApiController@monitoring');
+Route::get('get-last-time/{alat_id}', 'ApiController@last_time');

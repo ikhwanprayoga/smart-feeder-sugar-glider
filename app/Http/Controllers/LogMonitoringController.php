@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Alat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use DataTables;
@@ -17,6 +18,27 @@ class LogMonitoringController extends Controller
     {
         $data = DB::table('log_monitoring');
 
-        return datatables()->of($data)->toJson();
+        if ($request->has('filter_tanggal_mulai') && $request->has('filter_tanggal_mulai') && $request->input('filter_tanggal_mulai') != null && $request->input('filter_tanggal_mulai') != null) {
+            $mulai = date('Y-m-d', strtotime($request->filter_tanggal_mulai));
+            $akhir = date('Y-m-d', strtotime($request->filter_tanggal_akhir));
+            $data->whereBetween('created_at', [$mulai, $akhir]);
+        }
+
+        return datatables()->of($data)
+        ->addColumn('waktu', function ($data) {
+            return date('d-m-Y H:i', strtotime($data->created_at));
+        })
+        ->addColumn('nama_alat', function ($data) {
+            $alat = Alat::where('id', $data->alat_id)->first();
+
+            return $alat->nama;
+        })
+        ->editColumn('makanan', function ($data) {
+            return $data->makanan. ' Cm';
+        })
+        ->editColumn('air', function ($data) {
+            return $data->air. ' Cm';
+        })
+        ->toJson();
     }
 }

@@ -34,6 +34,7 @@ The above copyright notice and this permission notice shall be included in all c
       color: white
     }
   </style>
+  @stack('css')
 </head>
 
 <body class="">
@@ -45,7 +46,7 @@ The above copyright notice and this permission notice shall be included in all c
         Tip 2: you can also add an image using data-image tag
     -->
       <div class="logo"><a href="http://www.creative-tim.com" class="simple-text logo-normal">
-          Creative Tim
+          Smart Feeder
         </a></div>
       <div class="sidebar-wrapper">
         <ul class="nav">
@@ -160,6 +161,7 @@ The above copyright notice and this permission notice shall be included in all c
   <script src="{{ asset('assets/demo/demo.js') }}"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   @include('sweet::alert')
+  @stack('js')
   <script>
     $(document).ready(function() {
       $().ready(function() {

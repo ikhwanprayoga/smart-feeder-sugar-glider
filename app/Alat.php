@@ -12,4 +12,9 @@ class Alat extends Model
         'nama'
     ];
     public $timestamps = true;
+
+    public function kendali()
+    {
+        return $this->hasMany(Kendali::class);
+    }
 }

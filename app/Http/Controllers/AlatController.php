@@ -28,7 +28,7 @@ class AlatController extends Controller
 
     public function show($id)
     {
-        $data = Alat::where('id', $id)->first();
+        $data = Alat::with('kendali')->where('id', $id)->first();
 
         return view('kendali', compact('data'));
     }
@@ -40,6 +40,7 @@ class AlatController extends Controller
             'nama' => $request->nama
         ]);
 
+        alert()->success('Data berhasil diperbaharui', 'Sukses');
         return redirect()->back();
     }
 
@@ -48,6 +49,7 @@ class AlatController extends Controller
         $data = Alat::where('id', $id)->first();
         $data->delete();
 
+        alert()->success('Data berhasil dihapus', 'Sukses');
         return redirect()->back();
     }
 
@@ -58,6 +60,7 @@ class AlatController extends Controller
             'waktu' => $request->waktu
         ]);
 
+        alert()->success('Waktu kendali berhasil ditambahkan', 'Sukses');
         return redirect()->back();
     }
 
@@ -66,6 +69,7 @@ class AlatController extends Controller
         $data = Kendali::where('id', $id)->first();
         $data->delete();
 
+        alert()->success('Data berhasil dihapus', 'Sukses');
         return redirect()->back();
     }
 }
