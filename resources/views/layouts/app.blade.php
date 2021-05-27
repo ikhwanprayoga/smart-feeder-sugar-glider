@@ -112,8 +112,12 @@ The above copyright notice and this permission notice shall be included in all c
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                  <a class="dropdown-item" href="#">Profile</a>
-                  <a class="dropdown-item" href="#">Settings</a>
+                  @if (auth()->user()->id == 1)
+                  <a class="dropdown-item" href="{{ route('admin.profil.index') }}">Profil</a>
+                  @endif
+                  @if (auth()->user()->id != 1)
+                  <a class="dropdown-item" href="{{ route('profil.index') }}">Profil</a>
+                  @endif
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="{{ route('logout') }}"
                   onclick="event.preventDefault();

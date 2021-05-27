@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\User;
@@ -12,7 +12,7 @@ class ProfilController extends Controller
     {
         $user = User::where('id', auth()->user()->id)->first();
 
-        return view('admin.profil.index', compact('user'));
+        return view('profil', compact('user'));
     }
 
     public function update(Request $request)

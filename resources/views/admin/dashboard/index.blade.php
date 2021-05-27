@@ -13,15 +13,14 @@
             <div class="card card-stats">
               <div class="card-header card-header-warning card-header-icon">
                 <div class="card-icon">
-                  <i class="material-icons">water</i>
+                  <i class="material-icons">account_circle</i>
                 </div>
-                <p class="card-category">Sisa Air</p>
-                <h3 class="card-title" id="sisa-air">0<small>Cm</small></h3>
+                <p class="card-category">Pengguna</p>
+                <h3 class="card-title" id="sisa-air">{{ $user }}</h3>
               </div>
               <div class="card-footer">
                 <div class="stats">
-                  <i class="material-icons">water</i>
-                  <a href="javascript:;">Sisa air pada penampungan</a>
+                  <i class="material-icons">account_circle</i>Jumlah Pengguna Terdaftar
                 </div>
               </div>
             </div>
@@ -30,19 +29,19 @@
             <div class="card card-stats">
               <div class="card-header card-header-success card-header-icon">
                 <div class="card-icon">
-                  <i class="material-icons">food_bank</i>
+                  <i class="material-icons">precision_manufacturing</i>
                 </div>
-                <p class="card-category">Sisa Pakan</p>
-                <h3 class="card-title" id="sisa-makanan">0 <small>Cm</small></h3>
+                <p class="card-category">Alat</p>
+                <h3 class="card-title" id="sisa-makanan">{{ $alat }}</h3>
               </div>
               <div class="card-footer">
                 <div class="stats">
-                  <i class="material-icons">food_bank</i> Sisa makanan pada penampungan
+                  <i class="material-icons">precision_manufacturing</i> Jumlah Alat Terdaftar
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-6 col-sm-6">
+          {{-- <div class="col-lg-4 col-md-6 col-sm-6">
             <div class="card card-stats">
               <div class="card-header card-header-danger card-header-icon">
                 <div class="card-icon">
@@ -57,71 +56,12 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> --}}
         </div>
       </div>
     </div>
 @endsection
 
 @push('js')
-<script>
-  var id = 0
-  var urlMonitoring = '{{ url("api/get-data-monitoring") }}'
-  var urlDataCountDown = '{{ url("api/get-last-time") }}'
-  var secondLast = 0;
 
-  $('#pilih-alat').on('change', function (e) {
-      id = $('#pilih-alat').val()
-      getDataCountDown()
-      getDataMonitoring()
-  });
-
-  function getDataMonitoring() {
-    console.log('id alat', id)
-    $.get(urlMonitoring+'/'+id, function (data) {
-      console.log('data', data)
-      $('#sisa-makanan').html(data.makanan+'<small> Cm</small>')
-      $('#sisa-air').html(data.air+'<small> Cm</small>')
-    })
-  }
-
-  function getDataCountDown() {
-    $.get(urlDataCountDown+'/'+id, function (data) {
-      console.log('data last', data)
-      secondLast = data.diff
-    })
-  }
-
-  setInterval(() => {
-    getDataMonitoring()
-  }, 2000);
-
-  window.onload = function () {
-    id = $('#pilih-alat').val()
-    $.get(urlDataCountDown+'/'+id, function (data) {
-      console.log('data last', data)
-      var second = data.diff,
-      display = document.querySelector('#count-down');
-      startTimer(second, display);
-      $('#waktu-makan-berikutnya').html('<i class="material-icons">alarm_on</i> Waktu Makan Berikutnya '+data.waktu)
-    })
-  };
-
-  function startTimer(duration, display) {
-    var timer = duration, minutes, seconds;
-    setInterval(function () {
-        minutes = parseInt(timer / 60, 10);
-        seconds = parseInt(timer % 60, 10);
-
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-
-        display.textContent = minutes + ":" + seconds;
-
-        if (--timer < 0) {
-            timer = duration;
-        }
-    }, 1000);
-  }
-</script>
 @endpush

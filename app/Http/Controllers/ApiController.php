@@ -59,6 +59,16 @@ class ApiController extends Controller
         return $timeLast;
     }
 
+    public function get_status($alat_id)
+    {
+        # code...
+    }
+
+    public function store_status($alat_id)
+    {
+        # code...
+    }
+
     public function hitungDiffDetik($start, $finish)
     {
         return strtotime($finish) - strtotime($start);

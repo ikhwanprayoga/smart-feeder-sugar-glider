@@ -15,7 +15,7 @@
                     <div class="card-header card-header-primary">
                         <h4 class="card-title">Data Profil Pengguna </h4>
                     </div>
-                    <form method="post" action="{{ route('admin.profil.update') }}" class="form-horizontal">
+                    <form method="post" action="{{ route('profil.update') }}" class="form-horizontal">
                         @csrf
                         <div class="card-body table-responsive">
                             <div class="row">
