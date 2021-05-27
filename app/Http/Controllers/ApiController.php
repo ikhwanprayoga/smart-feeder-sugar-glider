@@ -61,12 +61,12 @@ class ApiController extends Controller
 
     public function get_status($alat_id)
     {
-        # code...
+        
     }
 
     public function store_status($alat_id)
     {
-        # code...
+        
     }
 
     public function hitungDiffDetik($start, $finish)
