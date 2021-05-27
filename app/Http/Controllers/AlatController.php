@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Alat;
-use App\Kendali;
+use App\Jadwal;
 use Illuminate\Http\Request;
 use SweetAlert;
 
@@ -28,9 +28,9 @@ class AlatController extends Controller
 
     public function show($id)
     {
-        $data = Alat::with('kendali')->where('id', $id)->first();
+        $data = Alat::with('jadwal')->where('id', $id)->first();
 
-        return view('kendali', compact('data'));
+        return view('jadwal', compact('data'));
     }
 
     public function update(Request $request, $id)
@@ -53,20 +53,20 @@ class AlatController extends Controller
         return redirect()->back();
     }
 
-    public function kendali_store(Request $request, $id)
+    public function jadwal_store(Request $request, $id)
     {
-        Kendali::create([
+        Jadwal::create([
             'alat_id' => $id,
             'waktu' => $request->waktu
         ]);
 
-        alert()->success('Waktu kendali berhasil ditambahkan', 'Sukses');
+        alert()->success('Waktu jadwal berhasil ditambahkan', 'Sukses');
         return redirect()->back();
     }
 
-    public function kendali_destroy($id)
+    public function jadwal_destroy($id)
     {
-        $data = Kendali::where('id', $id)->first();
+        $data = Jadwal::where('id', $id)->first();
         $data->delete();
 
         alert()->success('Data berhasil dihapus', 'Sukses');

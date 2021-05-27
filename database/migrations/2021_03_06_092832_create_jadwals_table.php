@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKendalisTable extends Migration
+class CreateJadwalsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateKendalisTable extends Migration
      */
     public function up()
     {
-        Schema::create('kendali', function (Blueprint $table) {
+        Schema::create('jadwal', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('alat_id')->nullable();
             $table->time('waktu');
@@ -30,6 +30,6 @@ class CreateKendalisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kendali');
+        Schema::dropIfExists('jadwal');
     }
 }

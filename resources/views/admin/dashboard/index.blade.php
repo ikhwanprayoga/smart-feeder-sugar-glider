@@ -9,20 +9,6 @@
 <div class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-4 col-md-4 col-sm-12">
-            <form action="">
-              <div class="form-group">
-                <label for="pilih-alat">Pilih alat yang dipantau</label>
-                <select class="form-control selectpicker" data-style="btn btn-link" id="pilih-alat">
-                  @foreach ($alats as $key => $alat)
-                  <option value="{{ $alat->id }}" {{ $key == 0 ? 'selected' : '' }}>{{ $alat->nama }}</option>
-                  @endforeach
-                </select>
-              </div>
-            </form>
-          </div>
-        </div>
-        <div class="row">
           <div class="col-lg-4 col-md-6 col-sm-6">
             <div class="card card-stats">
               <div class="card-header card-header-warning card-header-icon">
@@ -69,64 +55,6 @@
                 <div class="stats" id="waktu-makan-berikutnya">
                   <i class="material-icons">alarm_on</i> Waktu Makan Berikutnya 00:00 WIB
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-6 col-md-12">
-            <div class="card">
-              <div class="card-header card-header-primary">
-                <h4 class="card-title">List Waktu Makan</h4>
-                <p class="card-category">Waktu pembelian makanan masing-masing alat</p>
-              </div>
-              <div class="card-body table-responsive">
-                <table class="table table-hover">
-                  <thead class="text-primary">
-                    <th>No</th>
-                    <th>Alat</th>
-                    <th>Waktu</th>
-                  </thead>
-                  <tbody>
-                    @foreach ($jadwals as $jadwal)
-                    <tr>
-                      <td>{{ $loop->iteration }}</td>
-                      <td>{{ $jadwal->alat->nama }}</td>
-                      <td>{{ $jadwal->waktu }}</td>
-                    </tr>
-                    @endforeach
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-12">
-            <div class="card">
-              <div class="card-header card-header-primary">
-                <h4 class="card-title">5 Data Terakhir</h4>
-                <p class="card-category">5 data terakhir hasil pemantauan</p>
-              </div>
-              <div class="card-body table-responsive">
-                <table class="table table-hover">
-                  <thead class="text-primary">
-                    <th>No</th>
-                    <th>Alat</th>
-                    <th>Waktu</th>
-                    <th>Makanan</th>
-                    <th>Air</th>
-                  </thead>
-                  <tbody>
-                    @foreach ($logMonitorings as $logMonitoring)
-                    <tr>
-                      <td>{{ $loop->iteration }}</td>
-                      <td>{{ $logMonitoring->alat->nama }}</td>
-                      <td>{{ date('d-m-Y H:i', strtotime($logMonitoring->created_at)) }}</td>
-                      <td>{{ $logMonitoring->makanan }} Cm</td>
-                      <td>{{ $logMonitoring->air }} Cm</td>
-                    </tr>
-                    @endforeach
-                  </tbody>
-                </table>
               </div>
             </div>
           </div>

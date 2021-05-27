@@ -49,26 +49,44 @@ The above copyright notice and this permission notice shall be included in all c
           Smart Feeder
         </a></div>
       <div class="sidebar-wrapper">
-        <ul class="nav">
-          <li class="nav-item {{ (request()->is('dashboard*')) ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('dashboard.index') }}">
-              <i class="material-icons">dashboard</i>
-              <p>Dashboard</p>
-            </a>
-          </li>
-          <li class="nav-item {{ (request()->is('alat*')) ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('alat.index') }}">
-              <i class="material-icons">bubble_chart</i>
-              <p>Alat</p>
-            </a>
-          </li>
-          <li class="nav-item {{ (request()->is('log-monitoring*')) ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('log-monitoring.index') }}">
-              <i class="material-icons">library_books</i>
-              <p>Log Monitoring</p>
-            </a>
-          </li>
-        </ul>
+        @if (auth()->user()->id != 1)
+          <ul class="nav">
+            <li class="nav-item {{ (request()->is('dashboard*')) ? 'active' : '' }}">
+              <a class="nav-link" href="{{ route('dashboard.index') }}">
+                <i class="material-icons">dashboard</i>
+                <p>Dashboard</p>
+              </a>
+            </li>
+            <li class="nav-item {{ (request()->is('alat*')) ? 'active' : '' }}">
+              <a class="nav-link" href="{{ route('alat.index') }}">
+                <i class="material-icons">bubble_chart</i>
+                <p>Alat</p>
+              </a>
+            </li>
+            <li class="nav-item {{ (request()->is('log-monitoring*')) ? 'active' : '' }}">
+              <a class="nav-link" href="{{ route('log-monitoring.index') }}">
+                <i class="material-icons">library_books</i>
+                <p>Log Monitoring</p>
+              </a>
+            </li>
+          </ul>
+        @endif
+        @if (auth()->user()->id == 1)
+          <ul class="nav">
+            <li class="nav-item {{ (request()->is('admin/dashboard*')) ? 'active' : '' }}">
+              <a class="nav-link" href="{{ route('admin.dashboard.index') }}">
+                <i class="material-icons">dashboard</i>
+                <p>Dashboard</p>
+              </a>
+            </li>
+            <li class="nav-item {{ (request()->is('admin/pengguna*')) ? 'active' : '' }}">
+              <a class="nav-link" href="{{ route('admin.pengguna.index') }}">
+                <i class="material-icons">bubble_chart</i>
+                <p>Pengguna</p>
+              </a>
+            </li>
+          </ul>
+        @endif
       </div>
     </div>
     <div class="main-panel">
@@ -97,7 +115,13 @@ The above copyright notice and this permission notice shall be included in all c
                   <a class="dropdown-item" href="#">Profile</a>
                   <a class="dropdown-item" href="#">Settings</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Log out</a>
+                  <a class="dropdown-item" href="{{ route('logout') }}"
+                  onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();">
+                   Log out</a>
+                  <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
                 </div>
               </li>
             </ul>

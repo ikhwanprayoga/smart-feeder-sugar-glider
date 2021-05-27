@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Kendali extends Model
+class Jadwal extends Model
 {
-    protected $table = 'kendali';
+    protected $table = 'jadwal';
     protected $primarykey = 'id';
     protected $fillable = [
         'alat_id', 'waktu'

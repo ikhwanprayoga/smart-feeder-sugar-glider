@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Kendali;
+use App\Jadwal;
 use App\LogMonitoring;
 use App\Monitoring;
 use DateTime;
@@ -40,14 +40,14 @@ class ApiController extends Controller
     {
         $timeNow = date('H:i');
 
-        $kendalis = Kendali::where('alat_id', $alat_id)->orderBy('waktu', )->get();
+        $jadwals = Jadwal::where('alat_id', $alat_id)->orderBy('waktu', )->get();
         $q = 0;
-        foreach ($kendalis as $key => $kendali) {
-            if ($kendali->waktu > $timeNow) {
-                $s[$q] = $this->hitungDiffDetik($timeNow, $kendali->waktu);
-                $d[$q]['id'] = $kendali->id;
-                $d[$q]['waktu'] = date('H:i', strtotime($kendali->waktu));
-                $d[$q]['diff'] = $this->hitungDiffDetik($timeNow, $kendali->waktu);
+        foreach ($jadwals as $key => $jadwal) {
+            if ($jadwal->waktu > $timeNow) {
+                $s[$q] = $this->hitungDiffDetik($timeNow, $jadwal->waktu);
+                $d[$q]['id'] = $jadwal->id;
+                $d[$q]['waktu'] = date('H:i', strtotime($jadwal->waktu));
+                $d[$q]['diff'] = $this->hitungDiffDetik($timeNow, $jadwal->waktu);
                 $q = $q + 1;
             }
         }

@@ -13,8 +13,8 @@ class Alat extends Model
     ];
     public $timestamps = true;
 
-    public function kendali()
+    public function jadwal()
     {
-        return $this->hasMany(Kendali::class);
+        return $this->hasMany(Jadwal::class);
     }
 }

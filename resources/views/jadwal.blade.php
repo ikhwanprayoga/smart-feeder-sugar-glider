@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@push('title', 'Kendali')
+@push('title', 'Jadwal')
 
 @push('css')
     
@@ -13,7 +13,7 @@
                   <div class="col-md-12">
                         <div class="card">
                           <div class="card-header card-header-primary">
-                            <h4 class="card-title">Kendali Alat {{ $data->nama }}</h4>
+                            <h4 class="card-title">Jadwal Alat {{ $data->nama }}</h4>
                             <button class="btn btn-warning pull-right btn-sm" data-toggle="modal" data-target="#modalTambah"><i class="material-icons">alarm_add</i>&nbsp; Tambah Waktu</button>
                           </div>
                           <div class="card-body table-responsive">
@@ -24,12 +24,12 @@
                                 <th>Aksi</th>
                               </thead>
                               <tbody>
-                                @foreach ($data->kendali as $kendali)
+                                @foreach ($data->jadwal as $jadwal)
                                 <tr>
                                   <td>{{ $loop->iteration }}</td>
-                                  <td>{{ $kendali->waktu }}</td>
+                                  <td>{{ $jadwal->waktu }}</td>
                                   <td>
-                                    <button type="button" rel="tooltip" title="Hapus" onclick="hapusData(this)" data-id="{{ $kendali->id }}" data-waktu="{{ $kendali->waktu }}" class="btn btn-danger btn-link btn-sm"><i class="material-icons">delete</i></button>
+                                    <button type="button" rel="tooltip" title="Hapus" onclick="hapusData(this)" data-id="{{ $jadwal->id }}" data-waktu="{{ $jadwal->waktu }}" class="btn btn-danger btn-link btn-sm"><i class="material-icons">delete</i></button>
                                   </td>
                                 </tr>
                                 @endforeach
@@ -49,12 +49,12 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Tambah Waktu Kendali</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Tambah Waktu Jadwal</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="{{ route('alat.kendali.store', ['id'=>$data->id]) }}" method="post">
+      <form action="{{ route('alat.jadwal.store', ['id'=>$data->id]) }}" method="post">
         @csrf
         <div class="modal-body">
           <label class="bmd-label-floating">Waktu Beri Pakan</label>
@@ -75,7 +75,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Hapus Waktu Kendali</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Hapus Waktu Jadwal</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -100,7 +100,7 @@
 
 @push('js')
 <script>
-  const url = '{{ url("alat/kendali") }}'
+  const url = '{{ url("alat/jadwal") }}'
 
   function hapusData(e) {
     const id = $(e).data("id")
