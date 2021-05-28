@@ -9,7 +9,7 @@ class Alat extends Model
     protected $table = 'alat';
     protected $primarykey = 'id';
     protected $fillable = [
-        'nama'
+        'nama', 's'
     ];
     public $timestamps = true;
 

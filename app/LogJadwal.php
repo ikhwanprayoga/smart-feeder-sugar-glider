@@ -12,4 +12,9 @@ class LogJadwal extends Model
         'jadwal_id', 'status'
     ];
     public $timestamps = true;
+
+    public function jadwal()
+    {
+        return $this->belongsTo(Jadwal::class, 'jadwal_id');
+    }
 }

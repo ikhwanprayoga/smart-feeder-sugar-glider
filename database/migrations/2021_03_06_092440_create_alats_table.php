@@ -16,6 +16,7 @@ class CreateAlatsTable extends Migration
         Schema::create('alat', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
+            $table->boolean('status_pakan')->default(false);
             $table->timestamps();
         });
     }
