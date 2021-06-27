@@ -20,7 +20,8 @@
                             <table class="table table-hover">
                               <thead class="text-primary">
                                 <th>No</th>
-                                <th width="60%">Alat</th>
+                                <th>Alat</th>
+                                <th>id Alat</th>
                                 <th>Aksi</th>
                               </thead>
                               <tbody>
@@ -28,6 +29,7 @@
                                 <tr>
                                   <td>{{ $loop->iteration }}</td>
                                   <td>{{ $data->nama }}</td>
+                                  <td>{{ $data->id }}</td>
                                   <td>
                                     <a href={{ route('alat.show', ['id' => $data->id]) }}>
                                       <button type="button" rel="tooltip" title="Detail" class="btn btn-info btn-link btn-sm"><i class="material-icons">remove_red_eye</i></button>
