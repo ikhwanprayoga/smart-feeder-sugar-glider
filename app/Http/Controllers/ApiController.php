@@ -84,11 +84,11 @@ class ApiController extends Controller
         $data = Monitoring::where('alat_id', $alat_id)->first();
 
         $d =[
-            'makanan' => $data->makanan / 12 * 100,
-            'air' => $data->air / 19 * 100,
+            'makanan' => number_format(($data->makanan / 12) * 100 ,0,",","."),
+            'air' => number_format(($data->air / 19) * 100 ,0,",","."),
         ];
 
-        return response()->json($data, 200);
+        return response()->json($d, 200);
     }
 
     public function last_time($alat_id)
