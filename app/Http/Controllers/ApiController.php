@@ -15,7 +15,7 @@ use function GuzzleHttp\Promise\all;
 class ApiController extends Controller
 {
     public function kirim_data($alat_id, $makanan, $air)
-    {
+    { 
         Monitoring::updateOrCreate(
             [
                 'alat_id' => $alat_id
@@ -82,6 +82,11 @@ class ApiController extends Controller
     public function monitoring($alat_id)
     {
         $data = Monitoring::where('alat_id', $alat_id)->first();
+
+        $d =[
+            'makanan' => $data->makanan / 12 * 100,
+            'air' => $data->air / 19 * 100,
+        ];
 
         return response()->json($data, 200);
     }
