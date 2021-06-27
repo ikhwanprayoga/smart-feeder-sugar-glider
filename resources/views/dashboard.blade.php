@@ -30,7 +30,7 @@
                   <i class="material-icons">water</i>
                 </div>
                 <p class="card-category">Sisa Air</p>
-                <h3 class="card-title" id="sisa-air">0<small>Cm</small></h3>
+                <h3 class="card-title" id="sisa-air">0<small>%</small></h3>
               </div>
               <div class="card-footer">
                 <div class="stats">
@@ -47,7 +47,7 @@
                   <i class="material-icons">food_bank</i>
                 </div>
                 <p class="card-category">Sisa Pakan</p>
-                <h3 class="card-title" id="sisa-makanan">0 <small>Cm</small></h3>
+                <h3 class="card-title" id="sisa-makanan">0 <small>%</small></h3>
               </div>
               <div class="card-footer">
                 <div class="stats">
@@ -121,8 +121,8 @@
                       <td>{{ $loop->iteration }}</td>
                       <td>{{ $logMonitoring->alat->nama }}</td>
                       <td>{{ date('d-m-Y H:i', strtotime($logMonitoring->created_at)) }}</td>
-                      <td>{{ $logMonitoring->makanan }} Cm</td>
-                      <td>{{ $logMonitoring->air }} Cm</td>
+                      <td>{{ $logMonitoring->makanan }} %</td>
+                      <td>{{ $logMonitoring->air }} %</td>
                     </tr>
                     @endforeach
                   </tbody>
@@ -152,8 +152,8 @@
     console.log('id alat', id)
     $.get(urlMonitoring+'/'+id, function (data) {
       console.log('data', data)
-      $('#sisa-makanan').html(data.makanan+'<small> Cm</small>')
-      $('#sisa-air').html(data.air+'<small> Cm</small>')
+      $('#sisa-makanan').html(data.makanan+'<small> %</small>')
+      $('#sisa-air').html(data.air+'<small> %</small>')
     })
   }
 

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@push('title', 'Jadwal')
+@push('title', 'Alat')
 
 @push('css')
     
@@ -13,7 +13,7 @@
                   <div class="col-md-12">
                         <div class="card">
                           <div class="card-header card-header-primary">
-                            <h4 class="card-title">Jadwal </h4>
+                            <h4 class="card-title">Data Alat </h4>
                             <button class="btn btn-warning pull-right btn-sm" data-toggle="modal" data-target="#modalTambah"><i class="material-icons">add_business</i>&nbsp; Tambah Alat</button>
                           </div>
                           <div class="card-body table-responsive">
