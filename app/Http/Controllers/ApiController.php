@@ -123,8 +123,15 @@ class ApiController extends Controller
 
     public function store_status($alat_id)
     {
-        $alat = Alat::where('id', $alat_id)->first()->update(['status_pakan' => 0]);
-        $jadwal = LogJadwal::where('id', $alat_id)->where('status', 0)->orderBy('id', 'desc')->first()->update(['status' => 1]);
+        $alat = Alat::where('id', $alat_id)->first();
+        $jadwal = LogJadwal::where('id', $alat_id)->where('status', 0)->orderBy('id', 'desc')->first();
+
+        if (!isset($jadwal)) {
+            return 'no log jadwal';
+        }
+
+        $alat->update(['status_pakan' => 0]);
+        $jadwal->update(['status' => 1]);
         
         return 'store success';
     }
