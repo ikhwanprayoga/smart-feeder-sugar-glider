@@ -16,10 +16,12 @@ class CreateLogJadwalsTable extends Migration
         Schema::create('log_jadwal', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('jadwal_id')->nullable();
+            $table->unsignedBigInteger('alat_id')->nullable();
             $table->integer('status')->default(0);
             $table->timestamps();
 
             $table->foreign('jadwal_id')->references('id')->on('jadwal')->onDelete('set null');
+            $table->foreign('alat_id')->references('id')->on('alat')->onDelete('set null');
         });
     }
 

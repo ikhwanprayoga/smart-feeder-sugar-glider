@@ -9,7 +9,7 @@ class LogMonitoring extends Model
     protected $table = 'log_monitoring';
     protected $primarykey = 'id';
     protected $fillable = [
-        'alat_id', 'makanan', 'air'
+        'alat_id', 'makanan', 'air', 'status_pakan'
     ];
     public $timestamps = true;
 

@@ -17,4 +17,9 @@ class Jadwal extends Model
     {
         return $this->belongsTo(Alat::class);
     }
+
+    public function log_jadwal()
+    {
+        return $this->hasMany(LogJadwal::class);
+    }
 }

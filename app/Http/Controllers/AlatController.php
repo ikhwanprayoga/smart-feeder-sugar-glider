@@ -18,7 +18,7 @@ class AlatController extends Controller
 
     public function store(Request $request)
     {
-        Alat::create([
+        $alat = Alat::create([
             'nama' => $request->nama
         ]);
 

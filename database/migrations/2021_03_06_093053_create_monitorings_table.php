@@ -18,6 +18,7 @@ class CreateMonitoringsTable extends Migration
             $table->unsignedBigInteger('alat_id')->nullable();
             $table->integer('makanan');
             $table->integer('air');
+            $table->integer('status_pakan')->nullable();
             $table->timestamps();
             
             $table->foreign('alat_id')->references('id')->on('alat')->onDelete('set null');

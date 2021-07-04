@@ -9,7 +9,7 @@ class LogJadwal extends Model
     protected $table = 'log_jadwal';
     protected $primarykey = 'id';
     protected $fillable = [
-        'jadwal_id', 'status'
+        'jadwal_id', 'status', 'alat_id'
     ];
     public $timestamps = true;
 

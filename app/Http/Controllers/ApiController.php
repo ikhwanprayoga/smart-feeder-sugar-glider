@@ -7,28 +7,88 @@ use App\Jadwal;
 use App\LogJadwal;
 use App\LogMonitoring;
 use App\Monitoring;
-use DateTime;
-use Illuminate\Http\Request;
-
-use function GuzzleHttp\Promise\all;
 
 class ApiController extends Controller
 {
     public function kirim_data($alat_id, $makanan, $air)
-    { 
+    {
+        $status_pakan = false;
+
+        //cek waktu sekarang
+        $now = date('H:i');
+
+        //cek data log terakhir
+        $lastLog = LogJadwal::where('alat_id', $alat_id)->where('status', 0)->orderBy('id', 'desc')->first();
+        
+        // apakah terdapat jadwal terakhir
+        if (isset($lastLog)) {
+
+            // jika ada, cek apakah waktu skrg lewat dri log terakhir
+            if ($now > $lastLog->jadwal->waktu) {
+
+                // cek status pakan, apakah 1
+                if ($lastLog->status == 1) {
+                    // buat log jadwal baru, berdasarkan jadwal selanjutnya dg sttus 0
+                    //ambil jadwal paling dekat dg waktu sekarang
+                    $jadwalA = Jadwal::where('alat_id', $alat_id)->where('waktu', '>=', $now)->orderBy('waktu', 'asc')->first();
+                    LogJadwal::create([
+                        'jadwal_id' => $jadwalA->id,
+                        'alat_id' => $alat_id,
+                        'status' => 0
+                    ]); 
+                } else {
+                    //ubah sttus pakan alat jadi true
+                    $status_pakan = true;
+                    Alat::where('id', $alat_id)->first()->update([
+                        'status_pakan' => $status_pakan
+                    ]);
+                }
+
+            }
+
+        } else {
+            // jika tidak ada
+            // cek waktu skrg, bandingkan dg jadwal terdekat selanjutnya
+            $jadwalB = Jadwal::where('alat_id', $alat_id)->where('waktu', '>=', $now)->orderBy('waktu', 'asc')->first();
+            if (isset($jadwalB)) {
+                LogJadwal::create([
+                    'jadwal_id' => $jadwalB->id,
+                    'alat_id' => $alat_id,
+                    'status' => 0
+                ]);
+            } else {
+                $jadwalC = Jadwal::where('alat_id', $alat_id)->where('waktu', '<=', $now)->orderBy('waktu', 'asc')->first();
+                LogJadwal::create([
+                    'jadwal_id' => $jadwalC->id,
+                    'alat_id' => $alat_id,
+                    'status' => 0
+                ]);
+            }
+            
+        }
+
         Monitoring::updateOrCreate(
             [
                 'alat_id' => $alat_id
             ],[
                 'makanan' => $makanan,
-                'air' => $air
+                'air' => $air,
+                'status_pakan' => $status_pakan
             ]);
 
         LogMonitoring::create([
             'alat_id' => $alat_id,
             'makanan' => $makanan,
             'air' => $air,
+            'status_pakan' => $status_pakan
         ]);
+
+        return 'update data monitoring success';
+        
+    }
+    public function kirim_data_old($alat_id, $makanan, $air)
+    {
+        $status_pakan = false;
 
         //cek waktu sekarang
         $now = date('H:i');
@@ -38,8 +98,9 @@ class ApiController extends Controller
         
         //jika data tidak tersedia
         if (!isset($lastLog)) {
+            
             //ambil jadwal paling dekat dg waktu sekarang
-            $jadwalA = Jadwal::where('alat_id', $alat_id)->where('waktu', '<=', $now)->orderBy('waktu', 'desc')->fisrt();
+            $jadwalA = Jadwal::where('alat_id', $alat_id)->where('waktu', '<=', $now)->orderBy('waktu', 'desc')->first();
 
             if (!isset($jadwalA)) {
                 $jadwalB = Jadwal::where('alat_id', $alat_id)->orderBy('waktu', 'desc')->first();
@@ -48,7 +109,7 @@ class ApiController extends Controller
                     'alat_id' => $alat_id,
                     'status' => 1
                 ]);
-            }
+            } 
 
             //buat log jadwal yg seakan-akan pakan sudah di siapkan
             LogJadwal::create([
@@ -56,6 +117,7 @@ class ApiController extends Controller
                 'alat_id' => $alat_id,
                 'status' => 1
             ]); 
+
         }
 
         //ambil data log jadwal terakhir
@@ -63,18 +125,36 @@ class ApiController extends Controller
 
         //cek apakah waktu sekarang lebih dari log jadwal terakhir
         if ($now >= $cekLogJadwal->jadwal->waktu) {
-            $cekJadwal = Jadwal::where('alat_id', $alat_id)->where('waktu', '<=', $now)->orderBy('waktu', 'desc')->fisrt();
+            $cekJadwal = Jadwal::where('alat_id', $alat_id)->where('waktu', '<=', $now)->orderBy('waktu', 'desc')->first();
             LogJadwal::create([
                 'jadwal_id' => $cekJadwal->id,
                 'alat_id' => $alat_id,
-                'sttus' => 0
+                'status' => 0
             ]);
 
+            $status_pakan = true;
+
             //ubah sttus pakan alat jadi true
-            Alat::where('alat_id', $alat_id)->first()->update([
-                'status_pakan' => true
+            Alat::where('id', $alat_id)->first()->update([
+                'status_pakan' => $status_pakan
             ]);
         }
+
+        Monitoring::updateOrCreate(
+            [
+                'alat_id' => $alat_id
+            ],[
+                'makanan' => $makanan,
+                'air' => $air,
+                'status_pakan' => $status_pakan
+            ]);
+
+        LogMonitoring::create([
+            'alat_id' => $alat_id,
+            'makanan' => $makanan,
+            'air' => $air,
+            'status_pakan' => $status_pakan
+        ]);
 
         return 'update data monitoring success';
     }
@@ -129,7 +209,7 @@ class ApiController extends Controller
     public function store_status($alat_id)
     {
         $alat = Alat::where('id', $alat_id)->first();
-        $jadwal = LogJadwal::where('id', $alat_id)->where('status', 0)->orderBy('id', 'desc')->first();
+        $jadwal = LogJadwal::where('alat_id', $alat_id)->where('status', 0)->orderBy('id', 'desc')->first();
 
         if (!isset($jadwal)) {
             return 'no log jadwal';
