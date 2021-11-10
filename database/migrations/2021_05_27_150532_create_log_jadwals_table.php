@@ -17,6 +17,7 @@ class CreateLogJadwalsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('jadwal_id')->nullable();
             $table->unsignedBigInteger('alat_id')->nullable();
+            $table->date('tanggal');
             $table->integer('status')->default(0);
             $table->timestamps();
 

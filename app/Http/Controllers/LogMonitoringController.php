@@ -34,10 +34,10 @@ class LogMonitoringController extends Controller
             return $alat->nama;
         })
         ->editColumn('makanan', function ($data) {
-            return $data->makanan. ' Cm';
+            return number_format(($data->makanan / 12) * 100 ,0,",","."). ' %';
         })
         ->editColumn('air', function ($data) {
-            return $data->air. ' Cm';
+            return number_format(($data->air / 19) * 100 ,0,",","."). ' %';
         })
         ->toJson();
     }

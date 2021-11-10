@@ -15,34 +15,93 @@ class ApiController extends Controller
         $status_pakan = false;
 
         //cek waktu sekarang
-        $now = date('H:i');
+        $today = date('Y-m-d');
+        $now = date('H:i:s');
+
+        $jadwals = Jadwal::where('alat_id', $alat_id)->orderBy('waktu', 'asc')->get();
+
+        foreach ($jadwals as $key => $jadwal) {
+            
+            if ($now >= $jadwal->waktu) {
+                // return $jadwal;
+                //cek data log terakhir
+                $lastLog = LogJadwal::where('jadwal_id', $jadwal->id)->where('tanggal', $today)->first();
+                
+                // apakah terdapat log jadwal terakhir
+                if (isset($lastLog)) {
+        
+                    // jika ada, cek apakah waktu skrg lewat dri log terakhir
+                    // if ($now >= $lastLog->jadwal->waktu && $today == $lastLog->tanggal) {
+                    if ($lastLog->status == 0) {
+        
+                        //ubah sttus pakan alat jadi true
+                        $status_pakan = true;
+                        Alat::where('id', $alat_id)->first()->update([
+                            'status_pakan' => $status_pakan
+                        ]);
+        
+                    }
+        
+                } else {
+                    // jika tidak ada
+                    // cek waktu skrg, bandingkan dg jadwal terdekat selanjutnya
+                    // $jadwalB = Jadwal::where('alat_id', $alat_id)->where('waktu', '>=', $now)->orderBy('waktu', 'asc')->first();
+                    // if (isset($jadwalB)) {
+                        LogJadwal::create([
+                            'jadwal_id' => $jadwal->id,
+                            'alat_id' => $alat_id,
+                            'tanggal' => $today,
+                            'status' => 0
+                        ]);
+                    // } 
+                    
+                }
+            }
+
+        }
+
+        Monitoring::updateOrCreate(
+            [
+                'alat_id' => $alat_id
+            ],[
+                'makanan' => $makanan,
+                'air' => $air,
+                'status_pakan' => $status_pakan
+            ]);
+
+        LogMonitoring::create([
+            'alat_id' => $alat_id,
+            'makanan' => $makanan,
+            'air' => $air,
+            'status_pakan' => $status_pakan
+        ]);
+
+        return 'update data monitoring success';
+        
+    }
+
+    public function kirim_datas($alat_id, $makanan, $air)
+    {
+        $status_pakan = false;
+
+        //cek waktu sekarang
+        $today = date('Y-m-d');
+        $now = date('H:i:s');
 
         //cek data log terakhir
-        $lastLog = LogJadwal::where('alat_id', $alat_id)->where('status', 0)->orderBy('id', 'desc')->first();
+        $lastLog = LogJadwal::where('alat_id', $alat_id)->where('tanggal', $today)->where('status', 0)->orderBy('id', 'desc')->first();
         
-        // apakah terdapat jadwal terakhir
+        // apakah terdapat log jadwal terakhir
         if (isset($lastLog)) {
 
             // jika ada, cek apakah waktu skrg lewat dri log terakhir
-            if ($now > $lastLog->jadwal->waktu) {
+            if ($now >= $lastLog->jadwal->waktu && $today == $lastLog->tanggal) {
 
-                // cek status pakan, apakah 1
-                if ($lastLog->status == 1) {
-                    // buat log jadwal baru, berdasarkan jadwal selanjutnya dg sttus 0
-                    //ambil jadwal paling dekat dg waktu sekarang
-                    $jadwalA = Jadwal::where('alat_id', $alat_id)->where('waktu', '>=', $now)->orderBy('waktu', 'asc')->first();
-                    LogJadwal::create([
-                        'jadwal_id' => $jadwalA->id,
-                        'alat_id' => $alat_id,
-                        'status' => 0
-                    ]); 
-                } else {
-                    //ubah sttus pakan alat jadi true
-                    $status_pakan = true;
-                    Alat::where('id', $alat_id)->first()->update([
-                        'status_pakan' => $status_pakan
-                    ]);
-                }
+                //ubah sttus pakan alat jadi true
+                $status_pakan = true;
+                Alat::where('id', $alat_id)->first()->update([
+                    'status_pakan' => $status_pakan
+                ]);
 
             }
 
@@ -54,16 +113,10 @@ class ApiController extends Controller
                 LogJadwal::create([
                     'jadwal_id' => $jadwalB->id,
                     'alat_id' => $alat_id,
+                    'tanggal' => $today,
                     'status' => 0
                 ]);
-            } else {
-                $jadwalC = Jadwal::where('alat_id', $alat_id)->where('waktu', '<=', $now)->orderBy('waktu', 'asc')->first();
-                LogJadwal::create([
-                    'jadwal_id' => $jadwalC->id,
-                    'alat_id' => $alat_id,
-                    'status' => 0
-                ]);
-            }
+            } 
             
         }
 
@@ -173,18 +226,18 @@ class ApiController extends Controller
 
     public function last_time($alat_id)
     {
-        $timeNow = date('H:i');
+        $timeNow = date('H:i:s');
 
-        $jadwals = Jadwal::where('alat_id', $alat_id)->orderBy('waktu', )->get();
+        $jadwals = Jadwal::where('alat_id', $alat_id)->orderBy('waktu', 'desc')->get();
         $q = 0;
         foreach ($jadwals as $key => $jadwal) {
-            if ($jadwal->waktu > $timeNow) {
+            // if ($jadwal->waktu > $timeNow) {
                 $s[$q] = $this->hitungDiffDetik($timeNow, $jadwal->waktu);
                 $d[$q]['id'] = $jadwal->id;
                 $d[$q]['waktu'] = date('H:i', strtotime($jadwal->waktu));
                 $d[$q]['diff'] = $this->hitungDiffDetik($timeNow, $jadwal->waktu);
                 $q = $q + 1;
-            }
+            // }
         }
 
         $indexMin = array_keys($s, min($s));
@@ -208,21 +261,29 @@ class ApiController extends Controller
 
     public function store_status($alat_id)
     {
+        $today = date('Y-m-d');
         $alat = Alat::where('id', $alat_id)->first();
-        $jadwal = LogJadwal::where('alat_id', $alat_id)->where('status', 0)->orderBy('id', 'desc')->first();
+        
+        $jadwal = Jadwal::where('alat_id', $alat_id)->with('log_jadwal')->whereHas('log_jadwal', function ($q) use ($today) {
+            $q->where([['tanggal', $today], ['status', 0]]);
+        })->orderBy('waktu', 'asc')->first();
 
-        if (!isset($jadwal)) {
+        $logJadwal = LogJadwal::where('jadwal_id', $jadwal->id)->where('tanggal', $today)->where('status', 0)->first();
+
+        if (!isset($logJadwal)) {
             return 'no log jadwal';
         }
-
+        
         $alat->update(['status_pakan' => 0]);
-        $jadwal->update(['status' => 1]);
+        $logJadwal->update(['status' => 1]);
         
         return 'store success';
     }
 
     public function hitungDiffDetik($start, $finish)
     {
-        return strtotime($finish) - strtotime($start);
+        $dif = strtotime($finish) - strtotime($start);
+
+        return $dif;
     }
 }

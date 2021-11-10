@@ -2,6 +2,7 @@
 
 namespace App;
 
+Use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class LogMonitoring extends Model

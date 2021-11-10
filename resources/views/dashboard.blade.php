@@ -86,6 +86,7 @@
                 <th>No</th>
                 <th>Alat</th>
                 <th>Waktu</th>
+                <th>Status</th>
               </thead>
               <tbody>
                 @foreach ($jadwals as $jadwal)
@@ -93,6 +94,7 @@
                   <td>{{ $loop->iteration }}</td>
                   <td>{{ $jadwal->alat->nama }}</td>
                   <td>{{ $jadwal->waktu }}</td>
+                  <td>{{ cek_status_pengolahan_pakan($jadwal->id) }}</td>
                 </tr>
                 @endforeach
               </tbody>
